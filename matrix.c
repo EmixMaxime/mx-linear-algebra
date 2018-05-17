@@ -79,3 +79,35 @@ Matrix* makeIdentityMatrix(int n) {
 
     return out;
 }
+
+Matrix* multiplyMatrix(Matrix* a, Matrix* b) {
+    int i, j, k;
+    Matrix* out;
+    double* ptrOut;
+    double* ptrA;
+    double* ptrB;
+
+    assert(a->width == b->height, "Matrices have incorrect dimensions. a->width != b->height");
+
+    out = makeMatrix(b->width, a->height);
+    ptrOut = out->data;
+
+    for (i = 0; i < a->height; i++) {
+
+        for (j = 0; j < b->width; j++) {
+            ptrA = &a->data[i * a->width];
+            ptrB = &b->data[ j ];
+
+            *ptrOut = 0;
+            for (k = 0; k < a->width; k++) {
+                *ptrOut += *ptrA * *ptrB;
+                ptrA++;
+                ptrB += b->width;
+            }
+
+            ptrOut++;
+        }
+    }
+
+    return out;
+}
