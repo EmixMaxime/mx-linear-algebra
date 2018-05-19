@@ -27,7 +27,7 @@ void printMatrix(Matrix* m);
  * Basic operations
  */
 
-Matrix* multiplyMatrix(Matrix* a, Matrix* b)
+Matrix* multiplyMatrix(Matrix* a, Matrix* b);
 
 
 #endif
