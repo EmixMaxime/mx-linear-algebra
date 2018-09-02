@@ -24,4 +24,3 @@ Because I want to learn! Using Python and Numpy is just simple. And, I love this
 - [ ] Matrix Dot Diagonal (computes the dot product of the diagonals of two matrices)
 - [ ] Matrix Trace (Sum of elements along the diagonal)
 - [ ] Matrix Mean (returns the average of each column in a matrix)
-- [ ] Matrix Multiplication
