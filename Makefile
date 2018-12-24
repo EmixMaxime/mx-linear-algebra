@@ -1,9 +1,10 @@
-.PHONY: compile tests run cleantmp
+RM  = /bin/rm
 
 # The compilator
 CC      = gcc
 # flags for the compilator
-CFLAGS  = -g
+# -Wall
+CFLAGS  = -lm
 
 RM_FOLDER  = rm -fR
 
@@ -14,22 +15,26 @@ HEADERS = ./
 TESTS   = ./
 TESTS_DIST = ./tests/dist
 
-$(SRC)/%.o: $(SRC)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(HEADERS)
+LIBRARY = matrix.o
+TEST_APS = matrix_test
 
-cleantmp:
+# all: $(TEST_APS)
+
+# %.o: $*.c $*.h
+# 	@echo "Compiling"
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
 	@echo "Cleaning .o files"
-	rm -rf $(SRC)/*.o
+	-$(RM) $(SRC)/*.o
 
-compile: $(SRC)/helpers.o $(SRC)/matrix.o
-	gcc -o $(DIST)/Binary $?
-	# $(MAKE) cleantmp
+# $(TESTS)/%.o: $(TESTS)/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@ -I $(HEADERS)
 
-$(TESTS)/%.o: $(TESTS)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(HEADERS)
+DEPS = helpers.o
 
-tests: $(SRC)/matrix.o $(SRC)/helpers.o $(TESTS)/matrix_test.o
-	gcc -o $(TESTS_DIST)/Binary $?
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-# run: tests
-# 	./tests/dist/Binary
+matrix: matrix.o helpers.o
+	gcc $(CFLAGS) -o $@ $^

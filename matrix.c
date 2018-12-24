@@ -111,3 +111,53 @@ Matrix* multiplyMatrix(Matrix* a, Matrix* b) {
 
     return out;
 }
+
+void LUdecomposition(Matrix* a, Matrix** l, Matrix** u) {
+    int i, j, k;
+    double* ptrA;
+    double* ptrL;
+    double* ptrU;
+    double sum;
+
+    assert(a->width == a->height, "Matrix A must be square");
+
+    assert(*l == NULL && *u == NULL, "Matricies L and U must be null");
+
+    *l = makeMatrix(a->width, a->height);
+    *u = makeMatrix(a->width, a->height);
+
+    // Step 1: Assign 1 to the diagonal of the lower matrix.
+    ptrL = (*l)->data;
+    for (i = 0; i < a->width; i++) {
+        *ptrL = 1.0;
+        ptrL += a->width + 1;
+    }
+
+    // Step 2
+    for (j = 0; j < a->width; j++) {
+
+        // Part A: Solve for the upper matrix.
+        for (i = 0; i <= j; i++) {
+
+            sum = 0.0;
+            for (k = 0; k < i; k++) {
+                sum += (*l)->data[i * a->width + k] * (*u)->data[k * a->width + j];
+            }
+
+            (*u)->data[i * a->width + j] = a->data[i * a->width + j] - sum;
+        }
+
+        // Part B: Solve fpr the lower matrix
+        for (i = j+1; i < a->width; i++) {
+
+            sum = 0.0;
+            for (k = 0; k < j; k++) {
+                sum += (*l)->data[i * a->width + k] * (*u)->data[k * a->width + j];
+            }
+
+            (*l)->data[i * a->width + j] = 1.0/(*u)->data[j * a->width + j] * ( a->data[i * a->width + j] - sum);
+        }
+    }
+
+    return;
+}
